@@ -65,7 +65,7 @@ export async function createRoom(roomCode, playerId, grid) {
       player1: playerId,
       player2: null,
       grid: gridData,
-      currentPlayer: 1,
+      currentPlayer: Math.random() < 0.5 ? 1 : 2,
       gameStarted: false,
       gameOver: false,
       winner: null,
