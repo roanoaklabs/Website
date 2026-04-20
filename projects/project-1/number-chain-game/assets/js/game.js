@@ -58,19 +58,12 @@ export function getPlayerChainTips(grid, playerNumber) {
 }
 
 export function getValidMoves(grid, playerNumber) {
-  const tips = getPlayerChainTips(grid, playerNumber);
+  const playerCells = getPlayerCells(grid, playerNumber);
   const validMoves = [];
   
-  for (const tipIndex of tips) {
-    const { row, col } = getCellPosition(tipIndex);
-    const adjacent = getAdjacentCells(row, col);
-    
-    for (const adj of adjacent) {
-      const adjIndex = getCellIndex(adj.row, adj.col);
-      if (grid[adjIndex].value === 0) {
-        validMoves.push(adjIndex);
-      }
-    }
+  for (const cellIndex of playerCells) {
+    const extensions = getExtensionCells(grid, cellIndex, playerNumber);
+    validMoves.push(...extensions);
   }
   
   return validMoves;
@@ -81,6 +74,52 @@ export function canPlaceNumber(grid, index, playerNumber) {
   
   const validMoves = getValidMoves(grid, playerNumber);
   return validMoves.includes(index);
+}
+
+export function getPlayerCells(grid, playerNumber) {
+  const cells = [];
+  grid.forEach((cell, index) => {
+    if (cell.player === playerNumber && cell.value > 0) {
+      cells.push(index);
+    }
+  });
+  return cells;
+}
+
+export function getExtensionCells(grid, cellIndex, playerNumber) {
+  const cell = grid[cellIndex];
+  if (!cell || cell.player !== playerNumber || cell.value === 0) {
+    return [];
+  }
+  
+  const { row, col } = getCellPosition(cellIndex);
+  const adjacent = getAdjacentCells(row, col);
+  const extensions = [];
+  
+  for (const adj of adjacent) {
+    const adjIndex = getCellIndex(adj.row, adj.col);
+    if (grid[adjIndex].value === 0) {
+      extensions.push(adjIndex);
+    }
+  }
+  
+  return extensions;
+}
+
+export function canExtendFrom(grid, cellIndex, playerNumber) {
+  return getExtensionCells(grid, cellIndex, playerNumber).length > 0;
+}
+
+export function placeNumberFrom(grid, fromIndex, toIndex, playerNumber) {
+  const fromValue = grid[fromIndex].value;
+  const newValue = fromValue + 1;
+  
+  const newGrid = [...grid];
+  newGrid[toIndex] = {
+    player: playerNumber,
+    value: newValue
+  };
+  return newGrid;
 }
 
 export function placeNumber(grid, index, playerNumber) {
@@ -131,8 +170,10 @@ export function getMaxChainNumber(grid, playerNumber) {
 }
 
 export function getCurrentNextNumbers(grid) {
+  const p1Max = getMaxChainNumber(grid, 1);
+  const p2Max = getMaxChainNumber(grid, 2);
   return {
-    1: getNextNumber(grid, 1),
-    2: getNextNumber(grid, 2)
+    1: p1Max > 0 ? p1Max : '-',
+    2: p2Max > 0 ? p2Max : '-'
   };
 }

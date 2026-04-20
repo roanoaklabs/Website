@@ -122,12 +122,8 @@ export async function startChatListener(onMessageReceived) {
   });
 }
 
-export async function handleOnlineMove(index, grid, currentPlayer, gameOver) {
+export async function handleOnlineMove(fromIndex, toIndex, grid, currentPlayer, gameOver) {
   if (gameOver) {
-    return null;
-  }
-  
-  if (grid[index].value !== 0) {
     return null;
   }
   
@@ -135,7 +131,18 @@ export async function handleOnlineMove(index, grid, currentPlayer, gameOver) {
     return null;
   }
   
-  if (!game.canPlaceNumber(grid, index, playerNumber)) {
+  const toCell = grid[toIndex];
+  if (toCell.value !== 0) {
+    return null;
+  }
+  
+  const fromCell = grid[fromIndex];
+  if (!fromCell || fromCell.player !== playerNumber || fromCell.value === 0) {
+    return null;
+  }
+  
+  const extensions = game.getExtensionCells(grid, fromIndex, playerNumber);
+  if (!extensions.includes(toIndex)) {
     return null;
   }
   
@@ -145,10 +152,16 @@ export async function handleOnlineMove(index, grid, currentPlayer, gameOver) {
       return null;
     }
     
-    const newGrid = game.placeNumber(roomData.grid, index, playerNumber);
-    const nextNum = game.getNextNumber(newGrid, playerNumber);
-    const p1Max = playerNumber === 1 ? nextNum - 1 : game.getMaxChainNumber(newGrid, 1);
-    const p2Max = playerNumber === 2 ? nextNum - 1 : game.getMaxChainNumber(newGrid, 2);
+    const newGrid = game.placeNumberFrom(roomData.grid, fromIndex, toIndex, playerNumber);
+    const placedValue = newGrid[toIndex].value;
+    
+    let p1Max = roomData.p1Max || 3;
+    let p2Max = roomData.p2Max || 3;
+    if (playerNumber === 1) {
+      p1Max = Math.max(p1Max, placedValue);
+    } else {
+      p2Max = Math.max(p2Max, placedValue);
+    }
     
     const updateData = {
       grid: newGrid,

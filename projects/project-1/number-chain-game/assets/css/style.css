@@ -212,6 +212,23 @@ body {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
+.cell.selected {
+  border-color: #fbbf24;
+  box-shadow: 0 0 20px rgba(251, 191, 36, 0.6);
+  transform: scale(1.1);
+}
+
+.cell.extension {
+  border-color: #10b981;
+  background: rgba(16, 185, 129, 0.3);
+}
+
+.cell.extension:hover {
+  border-color: #34d399;
+  background: rgba(16, 185, 129, 0.5);
+  transform: scale(1.05);
+}
+
 .results {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);

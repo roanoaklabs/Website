@@ -13,6 +13,7 @@ let gameOver = false;
 let winner = null;
 let p1Max = 3;
 let p2Max = 3;
+let selectedCell = null;
 
 function init() {
   setupMenuListeners();
@@ -210,43 +211,66 @@ function handleCellClick(index) {
 function handleLocalClick(index) {
   if (gameOver) return;
   
-  if (!game.canPlaceNumber(grid, index, currentPlayer)) {
+  const clickedCell = grid[index];
+  
+  if (selectedCell === null) {
+    if (clickedCell.player === currentPlayer && clickedCell.value > 0) {
+      if (game.canExtendFrom(grid, index, currentPlayer)) {
+        selectedCell = index;
+        ui.renderGrid(grid, handleCellClick, selectedCell, game.getExtensionCells(grid, index, currentPlayer));
+      }
+    }
     return;
   }
   
-  grid = game.placeNumber(grid, index, currentPlayer);
+  const extensionCells = game.getExtensionCells(grid, selectedCell, currentPlayer);
   
-  const nextNum = game.getNextNumber(grid, currentPlayer);
-  if (currentPlayer === 1) {
-    p1Max = nextNum - 1;
-  } else {
-    p2Max = nextNum - 1;
-  }
-  
-  ui.renderGrid(grid, handleCellClick);
-  
-  if (game.isGameOver(grid)) {
-    const results = game.calculateFinalResults(grid);
-    winner = results.winner;
-    gameOver = true;
+  if (extensionCells.includes(index)) {
+    grid = game.placeNumberFrom(grid, selectedCell, index, currentPlayer);
     
-    ui.hideTurnIndicator();
-    ui.showResults(winner, results.maxNumbers, gameMode);
-  } else {
-    currentPlayer = currentPlayer === 1 ? 2 : 1;
-    updateTurnIndicator();
-    
-    if (gameMode === 'vs-computer-easy' && currentPlayer === 2) {
-      handleComputerTurn();
+    const placedValue = grid[index].value;
+    if (currentPlayer === 1) {
+      p1Max = Math.max(p1Max, placedValue);
+    } else {
+      p2Max = Math.max(p2Max, placedValue);
     }
+    
+    selectedCell = null;
+    
+    ui.renderGrid(grid, handleCellClick);
+    
+    if (game.isGameOver(grid)) {
+      const results = game.calculateFinalResults(grid);
+      winner = results.winner;
+      gameOver = true;
+      
+      ui.hideTurnIndicator();
+      ui.showResults(winner, results.maxNumbers, gameMode);
+    } else {
+      selectedCell = null;
+      currentPlayer = currentPlayer === 1 ? 2 : 1;
+      updateTurnIndicator();
+      
+      if (gameMode === 'vs-computer-easy' && currentPlayer === 2) {
+        handleComputerTurn();
+      }
+    }
+  } else if (clickedCell.player === currentPlayer && clickedCell.value > 0) {
+    if (game.canExtendFrom(grid, index, currentPlayer)) {
+      selectedCell = index;
+      ui.renderGrid(grid, handleCellClick, selectedCell, game.getExtensionCells(grid, index, currentPlayer));
+    }
+  } else {
+    selectedCell = null;
+    ui.renderGrid(grid, handleCellClick);
   }
 }
 
 function handleComputerTurn() {
   computer.scheduleComputerMove(() => {
-    const moveIndex = computer.makeComputerMove(grid, 2);
+    const move = computer.makeComputerMove(grid, 2);
     
-    if (moveIndex === null) {
+    if (move === null) {
       if (!game.hasValidMoves(grid, 1)) {
         const results = game.calculateFinalResults(grid);
         winner = results.winner;
@@ -261,9 +285,9 @@ function handleComputerTurn() {
       return;
     }
     
-    grid = game.placeNumber(grid, moveIndex, 2);
-    const nextNum = game.getNextNumber(grid, 2);
-    p2Max = nextNum - 1;
+    grid = game.placeNumberFrom(grid, move.fromIndex, move.toIndex, 2);
+    const placedValue = grid[move.toIndex].value;
+    p2Max = Math.max(p2Max, placedValue);
     
     ui.renderGrid(grid, handleCellClick);
     
@@ -288,13 +312,43 @@ function handleComputerTurn() {
       }
       
       currentPlayer = 1;
+      selectedCell = null;
       updateTurnIndicator();
     }
   });
 }
 
 async function handleOnlineClick(index) {
-  const result = await online.handleOnlineMove(index, grid, currentPlayer, gameOver);
+  const onlineState = online.getOnlineState();
+  const playerNum = onlineState.playerNumber;
+  const clickedCell = grid[index];
+  
+  if (selectedCell === null) {
+    if (clickedCell.player === playerNum && clickedCell.value > 0) {
+      if (game.canExtendFrom(grid, index, playerNum)) {
+        selectedCell = index;
+        ui.renderGrid(grid, handleCellClick, selectedCell, game.getExtensionCells(grid, index, playerNum));
+      }
+    }
+    return;
+  }
+  
+  const extensionCells = game.getExtensionCells(grid, selectedCell, playerNum);
+  
+  if (extensionCells.includes(index)) {
+    const result = await online.handleOnlineMove(selectedCell, index, grid, currentPlayer, gameOver);
+    if (result) {
+      selectedCell = null;
+    }
+  } else if (clickedCell.player === playerNum && clickedCell.value > 0) {
+    if (game.canExtendFrom(grid, index, playerNum)) {
+      selectedCell = index;
+      ui.renderGrid(grid, handleCellClick, selectedCell, game.getExtensionCells(grid, index, playerNum));
+    }
+  } else {
+    selectedCell = null;
+    ui.renderGrid(grid, handleCellClick);
+  }
 }
 
 function handlePlayAgain() {
@@ -325,6 +379,7 @@ function resetGameState() {
   winner = null;
   p1Max = 3;
   p2Max = 3;
+  selectedCell = null;
 }
 
 function updateTurnIndicator(playerNumber = null) {

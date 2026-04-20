@@ -28,7 +28,7 @@ export function showGame() {
   hideElement('results');
 }
 
-export function renderGrid(grid, onCellClick) {
+export function renderGrid(grid, onCellClick, selectedCell = null, validExtensionCells = []) {
   const gridElement = document.getElementById('grid');
   if (!gridElement) {
     console.error('Grid element not found');
@@ -49,7 +49,9 @@ export function renderGrid(grid, onCellClick) {
     for (let col = 0; col < GRID_SIZE; col++) {
       const index = row * GRID_SIZE + col;
       const cell = grid[index];
-      const cellDiv = createCellElement(cell, index, onCellClick);
+      const isSelected = index === selectedCell;
+      const isExtension = validExtensionCells.includes(index);
+      const cellDiv = createCellElement(cell, index, onCellClick, isSelected, isExtension);
       rowDiv.appendChild(cellDiv);
     }
     
@@ -57,7 +59,7 @@ export function renderGrid(grid, onCellClick) {
   }
 }
 
-function createCellElement(cell, index, onCellClick) {
+function createCellElement(cell, index, onCellClick, isSelected = false, isExtension = false) {
   const cellDiv = document.createElement('div');
   cellDiv.className = 'cell';
   cellDiv.dataset.index = index;
@@ -66,6 +68,14 @@ function createCellElement(cell, index, onCellClick) {
     cellDiv.classList.add('filled');
     cellDiv.style.backgroundColor = PLAYER_COLORS[cell.player];
     cellDiv.textContent = cell.value;
+  }
+  
+  if (isSelected) {
+    cellDiv.classList.add('selected');
+  }
+  
+  if (isExtension) {
+    cellDiv.classList.add('extension');
   }
   
   cellDiv.addEventListener('click', () => onCellClick(index));
