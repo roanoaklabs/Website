@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISP Speedtest</title>
+    <link rel="icon" type="image/svg+xml" href="../../assets/images/favicon.svg">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="../index_projs.html" class="back-link">
+                ← Back to Projects
+            </a>
+        </div>
+    </nav>
+
+    <article>
+        <div class="project-header">
+            <div class="project-tag">Python Development</div>
+            <h1>Continuous Network Performance Monitoring</h1>
+            <div class="project-meta">Built with Python3 and speedtest-cli • Summer 2024</div>
+        </div>
+
+        <div class="content">
+            <p>
+                Monitoring internet connectivity presents a  challenge: standard online speed testing tools provide only momentary snapshots of network performance. When experiencing intermittent connectivity issues, these single-point measurements fail to capture the complete picture of network behavior over time. With this small project, I was trying to addresses that limitation by implementing a continuous monitoring solution that logs internet speeds at regular intervals, providing more complete data for troubleshooting.
+            </p>
+
+            <h2>The Problem</h2>
+            <p>
+                Internet service providers typically offer web-based speed testing tools that measure download and upload speeds at a single moment. While useful for quick checks, these tools are inadequate for diagnosing intermittent connectivity problems. When experiencing periodic slowdowns or disconnections throughout the day, a snapshot test may coincidentally occur during a moment of normal performance, masking the underlying issue. Without continuous monitoring, it becomes difficult to identify patterns, correlate problems with specific times of day, or provide ISPs with concrete evidence of service degradation.
+            </p>
+
+            <h2>The Solution</h2>
+            <p>
+                I developed a Python-based application that performs automated speed tests at configurable intervals over extended periods. The script leverages the speedtest-cli library to measure download and upload speeds, logging all results to a CSV file for later analysis. The implementation includes robust error handling to manage network failures gracefully, ensuring the monitoring process continues uninterrupted even when individual tests fail.
+            </p>
+
+            <div style="background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; margin: 30px 0;">
+<pre style="margin: 0;">Logged at 2025-11-13 21:45:27: 307.29 Mbps down, 126.85 Mbps up
+Logged at 2025-11-13 21:45:58: 298.83 Mbps down, 111.70 Mbps up
+Logged at 2025-11-13 21:46:29: 82.62 Mbps down, 106.55 Mbps up
+Logged at 2025-11-13 21:47:00: 307.21 Mbps down, 108.73 Mbps up
+Logged at 2025-11-13 21:47:29: 307.43 Mbps down, 140.49 Mbps up
+Logged at 2025-11-13 21:48:00: 284.10 Mbps down, 116.13 Mbps up
+Logged at 2025-11-13 21:48:31: 78.07 Mbps down, 122.36 Mbps up
+Logged at 2025-11-13 21:49:02: 81.15 Mbps down, 121.79 Mbps up</pre>
+</div>
+<p class="image-caption">Real-time terminal output showing speed measurements at ~30-second intervals</p>
+
+            <p>
+                The application accepts two key parameters: the interval between tests (in seconds) and the total monitoring duration (in hours). This flexibility allows users to customize the monitoring frequency based on their specific needs—from frequent 10-second intervals for intensive troubleshooting to hourly measurements for long-term baseline establishment.
+            </p>
+
+            <div class="tech-stack">
+                <span class="tech-tag">Python3</span>
+                <span class="tech-tag">speedtest-cli</span>
+                <span class="tech-tag">Matplotlib</span>
+            </div>
+
+            <h2>Key Features</h2>
+
+            <p>
+                <strong>Automated Continuous Monitoring:</strong> The script runs autonomously in the background, performing speed tests at user-defined intervals without manual intervention. This enables overnight or multi-day monitoring sessions that would be impractical with manual testing.
+            </p>
+            <p>
+                <strong>Data Logging:</strong> All measurements are recorded to a CSV file with timestamps, creating a permanent record that can be analyzed, shared with ISPs, or archived for future reference. The structured format facilitates further analysis using additional tools or custom scripts.
+            </p>
+            <p>
+                <strong>Built-in Visualization:</strong> The application includes a plotting function using matplotlib that generates time-series graphs of download and upload speeds. This visual representation makes it immediately apparent when and how connectivity issues occurred, revealing patterns that might not be obvious in raw data.
+            </p>
+
+            <img src="assets/images/ISPspeeds.png" alt="Application demo">
+            <p class="image-caption">Example output after 1 hour of data collection.</p>
+
+            <h2>Technical Highlights</h2>
+            <p>
+                The <code>speedtest-cli</code> library performs full-fledged speed tests similar to browser-based tools, which consume bandwidth and take time to complete. The configurable interval parameter allows users to find an appropriate balance between data granularity and network impact.
+            </p>
+
+            <div class="repo-section">
+                <h3>Link to Code</h3>
+                <p>Source code is available on GitHub. Feel free to explore, fork, or contribute!</p>
+                <a href="https://github.com/keshrao/ISP-speedtest/" class="repo-link" target="_blank">
+                    View on GitHub →
+                </a>
+            </div>
+        </div>
+    </article>
+
+    <footer>
+        <p>&copy; 2025 Roanoak.</p>
+    </footer>
+</body>
+</html>

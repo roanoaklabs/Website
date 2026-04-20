@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Game</title>
+    <link rel="icon" type="image/svg+xml" href="../../assets/images/favicon.svg">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <a href="../index_pnp.html" class="back-to-portfolio">← Back to Games</a>
+    <div class="container">
+        <h1>Memory Game</h1>
+        
+        <div class="mode-selector">
+            <label for="modeSelect">Game Mode:</label>
+            <select id="modeSelect" onchange="handleModeChange()">
+                <option value="solo">Solo</option>
+                <option value="vs-easy">VS Easy Computer</option>
+                <option value="vs-medium">VS Medium Computer</option>
+                <option value="vs-hard">VS Hard Computer</option>
+                <option value="vs-friend">VS Friend Online</option>
+            </select>
+        </div>
+
+        <div class="theme-selector">
+            <label for="themeSelect">Theme:</label>
+            <select id="themeSelect" onchange="handleSettingsChange()">
+                <option value="fruits">🍎 Fruits</option>
+                <option value="dinosaurs">🦕 Dinosaurs</option>
+                <option value="trucks">🚚 Trucks</option>
+                <option value="space">🚀 Space</option>
+                <option value="faces">😀 Faces</option>
+            </select>
+        </div>
+
+        <div class="size-selector">
+            <label for="sizeSelect">Grid Size:</label>
+            <select id="sizeSelect" onchange="handleSettingsChange()">
+                <option value="3x4">3x4</option>
+                <option value="4x4">4x4</option>
+                <option value="4x5">4x5</option>
+                <option value="5x6">5x6</option>
+                <option value="6x6">6x6</option>
+            </select>
+        </div>
+
+        <div class="turn-indicator" id="turnIndicator" style="display: none;">
+            <span id="turnText">Your Turn</span>
+        </div>
+
+        <div class="stats" id="stats">
+            <span id="soloStats">
+                <span>Moves: <span id="moves">0</span></span>
+                <span>Time: <span id="timer">0:00</span></span>
+            </span>
+            <span id="vsStats" style="display: none;">
+                <span>You: <span id="playerScore">0</span></span>
+                <span>Opponent: <span id="opponentScore">0</span></span>
+            </span>
+        </div>
+
+        <div class="game-board" id="gameBoard"></div>
+
+        <button class="restart-btn" onclick="initGame()">New Game</button>
+    </div>
+
+    <!-- Room Selection Modal -->
+    <div class="modal" id="roomModal">
+        <h2>Play Online</h2>
+        <p>Choose an option to play with a friend:</p>
+        <div class="button-group">
+            <button id="createRoomBtn" class="restart-btn" onclick="createRoom()">Create Game</button>
+            <button id="joinRoomBtn" class="restart-btn" onclick="showJoinInput()">Join Game</button>
+        </div>
+        <div id="joinInput" style="display: none; margin-top: 20px;">
+            <input type="text" id="roomCodeInput" placeholder="Enter Room Code" maxlength="20">
+            <div class="button-group">
+                <button id="submitJoinBtn" class="restart-btn" onclick="joinRoom()">Join</button>
+                <button id="cancelJoinBtn" class="restart-btn" onclick="hideJoinInput()">Cancel</button>
+            </div>
+        </div>
+        <button id="closeRoomModal" style="display:none;"></button>
+    </div>
+
+    <!-- Waiting Modal -->
+    <div class="modal" id="waitingModal">
+        <h2>Waiting for Friend...</h2>
+        <p>Share this code with your friend:</p>
+        <div class="room-code" id="roomCodeDisplay"></div>
+        <div class="button-group">
+            <button id="copyCodeBtn" class="copy-btn" onclick="copyRoomCode()">Copy Code</button>
+            <button id="cancelWaitingBtn" class="restart-btn" onclick="cancelRoom()">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Win Message Modal -->
+    <div class="modal" id="winMessage">
+        <h2 id="winTitle">Congratulations!</h2>
+        <div id="winContent"></div>
+        <div class="score-text" id="scoreText"></div>
+        <div class="button-group">
+            <button class="copy-btn" id="copyBtn" onclick="copyScore()">Copy Score</button>
+            <button class="restart-btn" onclick="initGame()">Play Again</button>
+        </div>
+    </div>
+
+    <!-- Load JavaScript Modules -->
+    <script type="module" src="assets/js/config.js"></script>
+    <script type="module" src="assets/js/firebase.js"></script>
+    <script type="module" src="assets/js/game.js"></script>
+    <script type="module" src="assets/js/ui.js"></script>
+    <script type="module" src="assets/js/online.js"></script>
+    <script type="module" src="assets/js/computer.js"></script>
+    <script type="module" src="assets/js/main.js"></script>
+    
+    <!-- === Chat UI (Vs Friend mode only) === -->
+    <div id="chat-toggle" class="chat-toggle hidden" title="Chat">💬</div>
+    <div id="chat-window" class="chat-window hidden">
+      <div id="chat-header">
+        <span>Chat</span>
+        <span id="chat-close" class="chat-close">✖</span>
+      </div>
+      <div id="chat-messages"></div>
+      <div id="chat-input-row">
+        <input id="chat-input" type="text" placeholder="Type a message..." />
+        <button id="chat-send">Send</button>
+      </div>
+    </div>
+
+</body>
+</html>

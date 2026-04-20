@@ -1,0 +1,16 @@
+<!-- Save this as favicon.svg -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-labelledby="title">
+  <title id="title">Roanoak Labs favicon</title>
+  <!-- Rounded square background -->
+  <rect width="64" height="64" rx="10" ry="10" fill="#0f5132"></rect>
+  <!-- Oak leaf (center) -->
+  <g fill="#ffffff">
+    <path d="M32 18 C28 22 28 30 32 34 C36 30 36 22 32 18 Z"></path>
+    <rect x="30.5" y="34" width="3" height="6" rx="1" ry="1"></rect>
+  </g>
+  <!-- Angle brackets (code) -->
+  <g fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="18,22 26,32 18,42"></polyline>
+    <polyline points="46,22 38,32 46,42"></polyline>
+  </g>
+</svg>
