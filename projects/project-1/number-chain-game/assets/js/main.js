@@ -239,7 +239,7 @@ function handleLocalClick(index) {
     
     ui.renderGrid(grid, handleCellClick);
     
-    if (game.isGameOver(grid)) {
+    if (game.isGameOver(grid) || game.bothPlayersHaveNoMoves(grid)) {
       const results = game.calculateFinalResults(grid);
       winner = results.winner;
       gameOver = true;
@@ -248,8 +248,16 @@ function handleLocalClick(index) {
       ui.showResults(winner, results.maxNumbers, gameMode);
     } else {
       selectedCell = null;
-      currentPlayer = currentPlayer === 1 ? 2 : 1;
-      updateTurnIndicator();
+      const nextPlayer = currentPlayer === 1 ? 2 : 1;
+      const nextPlayerHasMoves = game.hasValidMoves(grid, nextPlayer);
+      const currentPlayerHasMoves = game.hasValidMoves(grid, currentPlayer);
+      
+      if (!nextPlayerHasMoves && currentPlayerHasMoves) {
+        updateTurnIndicator();
+      } else {
+        currentPlayer = nextPlayer;
+        updateTurnIndicator();
+      }
       
       if (gameMode === 'vs-computer-easy' && currentPlayer === 2) {
         handleComputerTurn();
@@ -269,9 +277,10 @@ function handleLocalClick(index) {
 function handleComputerTurn() {
   computer.scheduleComputerMove(() => {
     const move = computer.makeComputerMove(grid, 2);
+    const p1HasMoves = game.hasValidMoves(grid, 1);
     
     if (move === null) {
-      if (!game.hasValidMoves(grid, 1)) {
+      if (!p1HasMoves) {
         const results = game.calculateFinalResults(grid);
         winner = results.winner;
         gameOver = true;
@@ -291,7 +300,7 @@ function handleComputerTurn() {
     
     ui.renderGrid(grid, handleCellClick);
     
-    if (game.isGameOver(grid)) {
+    if (game.isGameOver(grid) || game.bothPlayersHaveNoMoves(grid)) {
       const results = game.calculateFinalResults(grid);
       winner = results.winner;
       gameOver = true;
@@ -299,21 +308,16 @@ function handleComputerTurn() {
       ui.hideTurnIndicator();
       ui.showResults(winner, results.maxNumbers, gameMode);
     } else {
-      if (!game.hasValidMoves(grid, 1)) {
-        if (!game.hasValidMoves(grid, 2)) {
-          const results = game.calculateFinalResults(grid);
-          winner = results.winner;
-          gameOver = true;
-          
-          ui.hideTurnIndicator();
-          ui.showResults(winner, results.maxNumbers, gameMode);
-          return;
-        }
-      }
-      
-      currentPlayer = 1;
       selectedCell = null;
-      updateTurnIndicator();
+      const p1HasMoves = game.hasValidMoves(grid, 1);
+      const p2HasMoves = game.hasValidMoves(grid, 2);
+      
+      if (!p1HasMoves && p2HasMoves) {
+        updateTurnIndicator();
+      } else {
+        currentPlayer = 1;
+        updateTurnIndicator();
+      }
     }
   });
 }

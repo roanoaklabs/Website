@@ -144,6 +144,12 @@ export function isGameOver(grid) {
   return isBoardFull(grid);
 }
 
+export function bothPlayersHaveNoMoves(grid) {
+  const p1Moves = getValidMoves(grid, 1);
+  const p2Moves = getValidMoves(grid, 2);
+  return p1Moves.length === 0 && p2Moves.length === 0;
+}
+
 export function calculateFinalResults(grid) {
   const p1Max = getMaxChainNumber(grid, 1);
   const p2Max = getMaxChainNumber(grid, 2);

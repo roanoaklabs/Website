@@ -163,14 +163,25 @@ export async function handleOnlineMove(fromIndex, toIndex, grid, currentPlayer, 
       p2Max = Math.max(p2Max, placedValue);
     }
     
+    const otherPlayer = playerNumber === 1 ? 2 : 1;
+    const otherHasMoves = game.getValidMoves(newGrid, otherPlayer).length > 0;
+    const currentHasMoves = game.getValidMoves(newGrid, playerNumber).length > 0;
+    
+    let nextPlayer;
+    if (!otherHasMoves && currentHasMoves) {
+      nextPlayer = playerNumber;
+    } else {
+      nextPlayer = otherPlayer;
+    }
+    
     const updateData = {
       grid: newGrid,
-      currentPlayer: playerNumber === 1 ? 2 : 1,
+      currentPlayer: nextPlayer,
       p1Max: p1Max,
       p2Max: p2Max
     };
     
-    if (game.isGameOver(newGrid)) {
+    if (game.isGameOver(newGrid) || (!currentHasMoves && !otherHasMoves)) {
       const results = game.calculateFinalResults(newGrid);
       updateData.gameOver = true;
       updateData.winner = results.winner;

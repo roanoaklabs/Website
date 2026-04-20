@@ -19,13 +19,13 @@ export const PLAYER_COLORS = {
 };
 
 export const ROOM_CODE_ADJECTIVES = [
-  'BLUE', 'RED', 'GREEN', 'GOLD', 'PINK',
-  'COOL', 'FAST', 'BOLD', 'DARK', 'BRIGHT'
+  'PRIME', 'ODD', 'EVEN', 'REAL', 'POSITIVE',
+  'NEGATIVE', 'WHOLE', 'RATIONAL'
 ];
 
 export const ROOM_CODE_NOUNS = [
-  'STAR', 'MOON', 'VOID', 'COSMOS', 'NEBULA',
-  'COMET', 'ORBIT', 'QUASAR', 'PULSAR', 'GALAXY'
+  'ADD', 'SUB', 'MULT', 'DIV', 'MOD',
+  'POW', 'LOG', 'SIN', 'PI'
 ];
 
 export const GAME_MODES = {

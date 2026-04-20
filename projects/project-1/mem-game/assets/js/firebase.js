@@ -55,7 +55,7 @@ export async function createRoom(roomCode, playerId, roomData) {
         gameStarted: false
     };
 
-    await set(ref(database, 'memory-game/rooms/' + roomCode), fullRoomData);
+    await set(ref(database, 'memory-game/' + roomCode), fullRoomData);
     return { roomCode, playerId, playerNumber: 1 };
 }
 
@@ -63,7 +63,7 @@ export async function joinRoom(roomCode, playerId) {
     const { ref, get, update } = await import('https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js');
     await initFirebase();
 
-    const roomRef = ref(database, 'memory-game/rooms/' + roomCode);
+    const roomRef = ref(database, 'memory-game/' + roomCode);
     const snapshot = await get(roomRef);
 
     if (!snapshot.exists()) {
@@ -88,7 +88,7 @@ export async function updateRoom(roomCode, updateData) {
     const { ref, update } = await import('https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js');
     await initFirebase();
 
-    const roomRef = ref(database, 'memory-game/rooms/' + roomCode);
+    const roomRef = ref(database, 'memory-game/' + roomCode);
     await update(roomRef, updateData);
 }
 
@@ -96,14 +96,14 @@ export async function deleteRoom(roomCode) {
     const { ref, remove } = await import('https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js');
     await initFirebase();
 
-    await remove(ref(database, 'memory-game/rooms/' + roomCode));
+    await remove(ref(database, 'memory-game/' + roomCode));
 }
 
 export async function getRoomData(roomCode) {
     const { ref, get } = await import('https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js');
     await initFirebase();
 
-    const roomRef = ref(database, 'memory-game/rooms/' + roomCode);
+    const roomRef = ref(database, 'memory-game/' + roomCode);
     const snapshot = await get(roomRef);
 
     if (snapshot.exists()) {
@@ -120,7 +120,7 @@ export async function listenToRoom(roomCode, callback) {
     const { ref, onValue } = await import('https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js');
     await initFirebase();
 
-    const roomRef = ref(database, 'memory-game/rooms/' + roomCode);
+    const roomRef = ref(database, 'memory-game/' + roomCode);
     return onValue(roomRef, (snapshot) => {
         if (snapshot.exists()) {
             callback(snapshot.val());
@@ -134,7 +134,7 @@ export async function sendChatMessage(roomCode, playerNumber, text) {
     const { ref, push } = await import('https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js');
     await initFirebase();
 
-    const chatRef = ref(database, 'memory-game/rooms/' + roomCode + '/chat');
+    const chatRef = ref(database, 'memory-game/' + roomCode + '/chat');
     await push(chatRef, {
         player: playerNumber,
         text: text,
@@ -146,7 +146,7 @@ export async function listenToChat(roomCode, callback) {
     const { ref, onValue } = await import('https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js');
     await initFirebase();
 
-    const chatRef = ref(database, 'memory-game/rooms/' + roomCode + '/chat');
+    const chatRef = ref(database, 'memory-game/' + roomCode + '/chat');
     return onValue(chatRef, (snapshot) => {
         const data = snapshot.val();
         if (data) {
