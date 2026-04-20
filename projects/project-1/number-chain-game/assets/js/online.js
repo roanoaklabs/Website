@@ -181,7 +181,7 @@ export async function handleOnlineMove(fromIndex, toIndex, grid, currentPlayer, 
       p2Max: p2Max
     };
     
-    if (game.isGameOver(newGrid) || (!currentHasMoves && !otherHasMoves)) {
+    if (game.isGameOver(newGrid) || (!currentHasMoves && !otherHasMoves) || game.shouldEndGameEarly(newGrid)) {
       const results = game.calculateFinalResults(newGrid);
       updateData.gameOver = true;
       updateData.winner = results.winner;

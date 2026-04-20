@@ -1,74 +1,49 @@
-# My Website
+# Personal Portfolio Website
+
+A personal portfolio website showcasing digital board games and coding projects.
 
 ## Overview
 
-This repository houses a personal portfolio website, showcasing my digital board games and coding project work. The site is built using standard HTML, CSS, and JavaScript. 
+This repository contains a portfolio website built with vanilla HTML, CSS, and JavaScript. It features digitized classic "pen & paper" games and various coding projects.
 
-## Proposed Organization of Folder Structure 
+## Projects
 
-To organize my website in a user-friendly but extensible manner, I'm going with the tree shown below.   
-1. Easy navigation: Links between landing page and projects are just relative paths (./projects/project-1/)  
-2. Centralized management: One repo to clone, one place to manage issues  
-3. Showcases everything: See all my work in one place  
-4. Learning-friendly: Easy to see my progression across projects as I learn to develop websites  
+### Digital Games
+
+- **Black Hole** - A strategic two-player number placement game on a pyramid structure
+- **Memory Game** - Classic card matching game
+- **Number Chain** - A two-player strategy game on a 6x6 grid
+
+### Coding Projects
+
+- **Internet Speed Monitor** - Python application for logging internet speeds over time
+
+## Tech Stack
+
+- **Frontend**: HTML5, CSS3, JavaScript
+- **Backend Services**: Firebase (for game data storage)
+- **Languages**: HTML, CSS, JavaScript, Python
+
+## Folder Structure
 
 ```
-my-portfolio/
+.
 ├── assets
-│   ├── css
-│   │   └── style.css
-│   └── images
-│       └── favicon.svg
-├── CNAME
-├── index.html
+│   ├── css
+│   │   └── style.css
+│   └── images
+│       └── favicon.svg
 ├── projects
-│   ├── project-1
-│   │   ├── assets
-│   │   │   ├── css
-│   │   │   │   └── style.css
-│   │   │   └── images
-│   │   │       └── BH-Game-Img.png
-│   │   ├── black-hole-game
-│   │   │   ├── assets
-│   │   │   │   ├── css
-│   │   │   │   │   └── style.css
-│   │   │   │   └── js
-│   │   │   │       ├── computer.js
-│   │   │   │       ├── config.js
-│   │   │   │       ├── firebase.js
-│   │   │   │       ├── game.js
-│   │   │   │       ├── main.js
-│   │   │   │       ├── online.js
-│   │   │   │       └── ui.js
-│   │   │   └── index_bh.html
-│   │   ├── index_pnp.html
-│   │   └── mem-game
-│   │       ├── assets
-│   │       │   ├── css
-│   │       │   │   └── style.css
-│   │       │   └── images
-│   │       └── index_mem_game.html
-│   └── project-2
-│       ├── assets
-│       │   ├── css
-│       │   │   └── style.css
-│       │   └── images
-│       │       └── BH-Game-Img.png
-│       ├── index_projs.html
-│       └── proj-ISP
-│           ├── assets
-│           │   ├── css
-│           │   │   └── style.css
-│           │   └── images
-│           │       └── ISPspeeds.png
-│           └── index_ISP.html
+│   ├── project-1          # Digital Games
+│   │   ├── black-hole-game
+│   │   ├── mem-game
+│   │   └── number-chain-game
+│   └── project-2          # Coding Projects
+│       └── proj-ISP
+├── index.html
 └── README.md
-└── .gitignore
 ```
 
-From the landing page, connect to various projects as such:  
+## License
 
-```
-<a href="./projects/project-1/" class="project-link">View Project →</a>
-<a href="./projects/project-2/" class="project-link">View Project →</a>
-```
+&copy; 2025 Roanoak. All rights reserved.

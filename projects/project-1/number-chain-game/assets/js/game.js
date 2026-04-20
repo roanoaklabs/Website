@@ -150,6 +150,18 @@ export function bothPlayersHaveNoMoves(grid) {
   return p1Moves.length === 0 && p2Moves.length === 0;
 }
 
+export function shouldEndGameEarly(grid) {
+  const p1Max = getMaxChainNumber(grid, 1);
+  const p2Max = getMaxChainNumber(grid, 2);
+  const p1Moves = getValidMoves(grid, 1);
+  const p2Moves = getValidMoves(grid, 2);
+  
+  if (p1Moves.length === 0 && p2Max > p1Max) return true;
+  if (p2Moves.length === 0 && p1Max > p2Max) return true;
+  
+  return false;
+}
+
 export function calculateFinalResults(grid) {
   const p1Max = getMaxChainNumber(grid, 1);
   const p2Max = getMaxChainNumber(grid, 2);

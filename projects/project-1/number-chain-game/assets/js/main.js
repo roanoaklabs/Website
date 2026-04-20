@@ -239,7 +239,7 @@ function handleLocalClick(index) {
     
     ui.renderGrid(grid, handleCellClick);
     
-    if (game.isGameOver(grid) || game.bothPlayersHaveNoMoves(grid)) {
+    if (game.isGameOver(grid) || game.bothPlayersHaveNoMoves(grid) || game.shouldEndGameEarly(grid)) {
       const results = game.calculateFinalResults(grid);
       winner = results.winner;
       gameOver = true;
@@ -300,7 +300,7 @@ function handleComputerTurn() {
     
     ui.renderGrid(grid, handleCellClick);
     
-    if (game.isGameOver(grid) || game.bothPlayersHaveNoMoves(grid)) {
+    if (game.isGameOver(grid) || game.bothPlayersHaveNoMoves(grid) || game.shouldEndGameEarly(grid)) {
       const results = game.calculateFinalResults(grid);
       winner = results.winner;
       gameOver = true;
