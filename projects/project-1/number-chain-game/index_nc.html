@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Chain</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <a href="../index_pnp.html" class="back-to-portfolio">← Back to Games</a>
+    
+    <div id="menuContainer" class="menu-container">
+        <h1 class="game-title">Number Chain</h1>
+        <p class="game-subtitle">Strategic Number Placement Game</p>
+        <div class="menu-buttons">
+            <button class="mode-btn" id="localBtn">🎮 Local 2-Player</button>
+            <button class="mode-btn" id="computerEasyBtn">🤖 Easy Computer</button>
+            <button class="mode-btn" id="onlineBtn">🌐 Play Online</button>
+        </div>
+        <div class="rules">
+            <h3>How to Play</h3>
+            <p>• Build numbered chains from your corner</p>
+            <p>• Each number must be placed adjacent to your previous number</p>
+            <p>• Chains can branch in multiple directions</p>
+            <p>• Block your opponent's chain tips</p>
+            <p>• Highest number on the board wins!</p>
+        </div>
+    </div>
+
+    <div id="gameContainer" class="game-container" style="display: none;">
+        <div class="header">
+            <button class="back-btn" id="backBtn">← Back</button>
+            <h1 class="game-title">Number Chain</h1>
+        </div>
+
+        <div class="turn-indicator" id="turnIndicator" style="display: none;">
+            <div class="player-icon p1" id="player1Icon">
+                <div class="icon-circle" id="player1Circle">1</div>
+            </div>
+            <div class="turn-text" id="turnText">Player 1's Turn</div>
+            <div class="player-icon p2" id="player2Icon">
+                <div class="icon-circle" id="player2Circle">1</div>
+            </div>
+        </div>
+
+        <div class="grid" id="grid"></div>
+
+        <div class="results" id="results" style="display: none;">
+            <h2 id="winnerText">Player 1 Wins!</h2>
+            <div class="scores">
+                <div id="player1ScoreText" style="color: #3b82f6;">Player 1 highest: 0</div>
+                <div id="player2ScoreText" style="color: #ef4444;">Player 2 highest: 0</div>
+            </div>
+            <button class="restart-btn" id="playAgainBtn">Play Again</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="roomModal" style="display: none;">
+        <div class="modal">
+            <h2>Play Online</h2>
+            <div class="modal-buttons">
+                <button class="modal-btn" id="createRoomBtn">Create Game</button>
+                <button class="modal-btn" id="joinRoomBtn">Join Game</button>
+            </div>
+            <div class="join-input-container" id="joinInputContainer" style="display: none;">
+                <input 
+                    type="text" 
+                    id="roomCodeInput" 
+                    placeholder="Enter Room Code" 
+                    maxlength="20"
+                    style="text-transform: uppercase;"
+                />
+                <div class="modal-buttons">
+                    <button class="modal-btn" id="submitJoinBtn">Join</button>
+                    <button class="modal-btn secondary" id="cancelJoinBtn">Cancel</button>
+                </div>
+            </div>
+            <button class="close-modal" id="closeRoomModal">✕</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="waitingModal" style="display: none;">
+        <div class="modal">
+            <h2>Waiting for Opponent...</h2>
+            <p>Share this code:</p>
+            <div class="room-code" id="roomCodeDisplay">BLUE-STAR</div>
+            <button class="modal-btn" id="copyCodeBtn">Copy Code</button>
+            <button class="modal-btn secondary" id="cancelWaitingBtn">Cancel</button>
+        </div>
+    </div>
+
+    <button class="chat-toggle" id="chatToggle" style="display: none;">
+        💬
+        <span class="badge" id="chatBadge" style="display: none;">0</span>
+    </button>
+
+    <div class="chat-window" id="chatWindow" style="display: none;">
+        <div class="chat-header">
+            <span>Chat</span>
+            <button id="closeChatBtn">✕</button>
+        </div>
+        <div class="chat-messages" id="chatMessages"></div>
+        <div class="chat-input-row">
+            <input 
+                type="text" 
+                id="chatInput" 
+                placeholder="Type a message..."
+            />
+            <button id="sendChatBtn">Send</button>
+        </div>
+    </div>
+
+    <script type="module" src="assets/js/config.js"></script>
+    <script type="module" src="assets/js/firebase.js"></script>
+    <script type="module" src="assets/js/game.js"></script>
+    <script type="module" src="assets/js/online.js"></script>
+    <script type="module" src="assets/js/ui.js"></script>
+    <script type="module" src="assets/js/main.js"></script>
+    <script type="module" src="assets/js/computer.js"></script>
+</body>
+</html>
