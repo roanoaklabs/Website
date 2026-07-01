@@ -254,15 +254,8 @@ function checkSolution() {
 
   clearHighlights();
 
-  for (let r = 0; r < SIZE; r++) {
-    for (let c = 0; c < SIZE; c++) {
-      if (board[r][c].type === 'empty') {
-        showMessage('Fill in every cell — mark it with an ✕ or a track piece — before checking.', 'warn');
-        return;
-      }
-    }
-  }
-
+  // Empty cells are treated the same as an explicit ✕ (no track) — the
+  // player doesn't need to mark every blank cell by hand.
   const rowCounts = Array(SIZE).fill(0);
   const colCounts = Array(SIZE).fill(0);
   for (let r = 0; r < SIZE; r++) {
