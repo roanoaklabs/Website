@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rail Tracks</title>
+    <link rel="icon" type="image/svg+xml" href="../../assets/images/favicon.svg">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <a href="../index_pnp.html" class="back-to-portfolio">← Back to Games</a>
+
+    <div class="page">
+        <header>
+            <h1 class="game-title">🚂 Rail Tracks</h1>
+            <p class="game-subtitle">Connect the two stations with a single railroad line</p>
+        </header>
+
+        <div class="layout">
+            <div class="board-wrap">
+                <div id="board" class="board"></div>
+                <div id="message" class="message"></div>
+            </div>
+
+            <div class="side-panel">
+                <div class="controls">
+                    <button id="checkBtn" class="btn btn-primary">✓ Check Solution</button>
+                    <button id="resetBtn" class="btn">↺ Reset</button>
+                    <button id="newPuzzleBtn" class="btn">🔀 New Puzzle</button>
+                </div>
+
+                <div class="rules">
+                    <h3>How to Play</h3>
+                    <p>• The two station cells (marked with a dot) are the start and finish of the line.</p>
+                    <p>• Click any other cell to mark it ✕ (no track) or place a straight/curved track piece.</p>
+                    <p>• The numbers above each column and beside each row show exactly how many cells in that line contain track.</p>
+                    <p>• The finished track must form one unbroken line from station to station — no branches, no extra loops.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/game.js" defer></script>
+</body>
+</html>

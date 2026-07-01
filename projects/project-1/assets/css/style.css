@@ -117,6 +117,18 @@ h1 {
     line-height: 1.6;
 }
 
+.coming-soon-badge {
+    display: inline-block;
+    font-size: 0.45em;
+    font-weight: 600;
+    color: #e67e22;
+    background: rgba(230, 126, 34, 0.12);
+    padding: 4px 10px;
+    border-radius: 12px;
+    vertical-align: middle;
+    margin-left: 8px;
+}
+
 .play-arrow {
     display: inline-block;
     margin-top: 15px;
