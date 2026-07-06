@@ -5,8 +5,19 @@
  * column/row contain track.
  */
 
-const SIZE = 6;
-const CELL_PX = 56;
+const SUPPORTED_SIZES = [6, 8, 10, 12];
+let SIZE = 6;
+
+// How long the generated path should be, as a fraction of total cells.
+// Tuned so puzzles stay appropriately dense (not too sparse or crowded)
+// across every supported grid size.
+function pathLengthRange(size) {
+  const total = size * size;
+  return {
+    minLen: Math.round(total * 0.28),
+    maxLen: Math.round(total * 0.55),
+  };
+}
 
 // Each track shape connects exactly two of the four compass sides.
 const SHAPE_SIDES = {
@@ -93,8 +104,7 @@ function generatePath() {
     borderCells.push([r, SIZE - 1]);
   }
 
-  const minLen = 10;
-  const maxLen = 20;
+  const { minLen, maxLen } = pathLengthRange(SIZE);
 
   for (let attempt = 0; attempt < 400; attempt++) {
     const start = borderCells[randInt(borderCells.length)];
@@ -295,7 +305,7 @@ const svgNS = 'http://www.w3.org/2000/svg';
 function renderBoard() {
   const boardEl = document.getElementById('board');
   boardEl.innerHTML = '';
-  boardEl.style.setProperty('--cell-size', `${CELL_PX}px`);
+  boardEl.dataset.size = SIZE;
 
   // Corner spacer
   boardEl.appendChild(makeClueCell(''));
@@ -494,7 +504,10 @@ function clearHighlights() {
 
 // --- Controls ------------------------------------------------------------------
 
-function newPuzzle() {
+function newPuzzle(size) {
+  if (size && SUPPORTED_SIZES.includes(size)) {
+    SIZE = size;
+  }
   state = buildPuzzle();
   renderBoard();
   clearHighlights();
@@ -516,9 +529,12 @@ function resetPuzzle() {
 
 document.addEventListener('DOMContentLoaded', () => {
   newPuzzle();
-  document.getElementById('newPuzzleBtn').addEventListener('click', newPuzzle);
+  document.getElementById('newPuzzleBtn').addEventListener('click', () => newPuzzle());
   document.getElementById('resetBtn').addEventListener('click', resetPuzzle);
   document.getElementById('checkBtn').addEventListener('click', checkSolution);
+  document.getElementById('sizeSelect').addEventListener('change', (e) => {
+    newPuzzle(parseInt(e.target.value, 10));
+  });
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closePicker();
   });

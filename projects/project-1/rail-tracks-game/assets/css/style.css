@@ -72,15 +72,39 @@ header {
 /* --- Board --- */
 
 .board {
-  --cell-size: 56px;
   display: grid;
-  grid-template-columns: repeat(7, var(--cell-size));
-  grid-template-rows: repeat(7, var(--cell-size));
   gap: 2px;
   background: #dfe4ea;
   padding: 2px;
   border-radius: 8px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Cell size and grid dimensions per supported board size (set via the
+   board's data-size attribute in JS). Keeping this in CSS — rather than
+   inline styles — lets the mobile media query below cleanly override it. */
+.board[data-size="6"] {
+  --cell-size: 56px;
+  grid-template-columns: repeat(7, var(--cell-size));
+  grid-template-rows: repeat(7, var(--cell-size));
+}
+
+.board[data-size="8"] {
+  --cell-size: 50px;
+  grid-template-columns: repeat(9, var(--cell-size));
+  grid-template-rows: repeat(9, var(--cell-size));
+}
+
+.board[data-size="10"] {
+  --cell-size: 44px;
+  grid-template-columns: repeat(11, var(--cell-size));
+  grid-template-rows: repeat(11, var(--cell-size));
+}
+
+.board[data-size="12"] {
+  --cell-size: 38px;
+  grid-template-columns: repeat(13, var(--cell-size));
+  grid-template-rows: repeat(13, var(--cell-size));
 }
 
 .clue-cell {
@@ -188,6 +212,28 @@ header {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.size-label {
+  font-size: 0.85em;
+  font-weight: 600;
+  color: #7f8c8d;
+  margin-bottom: -4px;
+}
+
+.size-select {
+  background: white;
+  border: 2px solid #dfe4ea;
+  color: #2c3e50;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 1em;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.size-select:hover {
+  border-color: #3498db;
 }
 
 .btn {
@@ -307,12 +353,29 @@ header {
 /* --- Responsive --- */
 
 @media (max-width: 640px) {
-  .board {
+  .board[data-size="6"] {
     --cell-size: 42px;
+  }
+
+  .board[data-size="8"] {
+    --cell-size: 36px;
+  }
+
+  .board[data-size="10"] {
+    --cell-size: 30px;
+  }
+
+  .board[data-size="12"] {
+    --cell-size: 26px;
   }
 
   .layout {
     gap: 20px;
+  }
+
+  .board-wrap {
+    max-width: 100%;
+    overflow-x: auto;
   }
 
   .side-panel {
